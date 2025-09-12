@@ -1,10 +1,11 @@
 'use client';
-import { UserInfoType, UserProfileType } from "@/types/user";
+import { AccessDataType, UserInfoType, UserProfileType } from "@/types/user";
 import { useContext } from "react";
-import { UserContext, UserProfileContext } from "./LayoutProvider";
+import { LoginContext, UserContext, UserProfileContext } from "./LayoutProvider";
 
 export default function Home() {
     // 회원정보
+    const loginData: AccessDataType = useContext(LoginContext);
     const userInfo: UserInfoType = useContext(UserContext);
     const userProfile: UserProfileType = useContext(UserProfileContext);
 
@@ -21,7 +22,11 @@ export default function Home() {
             <br />
             연락처: {userProfile?.tel}<br />
             이메일: {userProfile?.email}<br />
-            알림 수신여부: {userProfile?.push_receive_yn}
+            알림 수신여부: {userProfile?.push_receive_yn}<br />
+
+            <br />
+            {loginData.accessToken}<br />
+            <button type="button" onClick={() => loginData?.accessTokenRefresh()}>Refresh</button>
         </div>
     );
 }
