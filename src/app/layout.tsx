@@ -1,8 +1,8 @@
 'use client';
 import { useEffect, useState } from "react";
-import Provider, { UserContext } from "./Provider";
+import Provider, { UserContext } from "./LayoutProvider";
 import { UserInfoType, UserProfileType } from "@/types/user";
-import LayoutProvider from "./Provider";
+import LayoutProvider from "./LayoutProvider";
 
 export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
     const [userInfo, setUserInfo] = useState<UserInfoType | null>(null);

@@ -1,7 +1,7 @@
 'use client';
 import { UserInfoType, UserProfileType } from "@/types/user";
 import { useContext } from "react";
-import { UserContext, UserProfileContext } from "./Provider";
+import { UserContext, UserProfileContext } from "./LayoutProvider";
 
 export default function Home() {
     // 회원정보
