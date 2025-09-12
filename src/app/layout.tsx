@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useState } from "react";
-import Provider, { UserContext } from "./LayoutProvider";
 import { UserInfoType, UserProfileType } from "@/types/user";
 import LayoutProvider from "./LayoutProvider";
 

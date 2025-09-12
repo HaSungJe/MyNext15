@@ -8,11 +8,9 @@ type ProviderProps = {
     children: React.ReactNode;
 }
 
-// 회원정보
-export const UserContext = createContext<UserInfoType | null>(null);
-
-// 회원 프로필
-export const UserProfileContext = createContext<UserProfileType>(null);
+// Context
+export const UserContext = createContext<UserInfoType | null>(null); // 회원정보
+export const UserProfileContext = createContext<UserProfileType>(null); // 회원 프로필
 
 /**
  * LayoutProvider
