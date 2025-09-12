@@ -70,6 +70,10 @@ export default function KakaoMap( {width, height, lat, lon, text, textLink, zoom
     }, []);
 
     return (
-        <div data-type={`kakaoMap`} data-value={`kakaoMap_${text}`} style={{width: width, height: height}}></div> 
+        <div 
+            data-type={`kakaoMap`} 
+            data-value={`kakaoMap_${text}`} 
+            style={{width: width, height: height}}
+        />
     )
 }

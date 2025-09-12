@@ -21,8 +21,8 @@ type SeriesProps = {
 }
 
 export default function BarChart( {horizontal, showLabel, labels, series, x_title, y_title, width, height}: ChartProps ) {
-    const horizontal_T_show_label = horizontal === true ? showLabel : true;
-    const horizontal_F_show_label = horizontal === false ? showLabel : true;
+    const horizontal_T_show_label: boolean = horizontal === true ? showLabel : true;
+    const horizontal_F_show_label: boolean = horizontal === false ? showLabel : true;
 
     const options: ApexOptions = {
         chart: {

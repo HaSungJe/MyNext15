@@ -4,7 +4,9 @@ import 'react-quill-new/dist/quill.snow.css';
 
 type QuillEditorProps = {
     value: string;
-    setValueFunc: Function
+    maxHeight: number;
+    marginBottom: number;
+    setFunction: Function;
 }
 
 const modules = {
@@ -49,11 +51,11 @@ const formats = [
  * @param param0 
  * @returns 
  */
-export function QuillEditor( {value, setValueFunc}: QuillEditorProps ) {
-    const [editorHtml, setEditorHtml] = useState(value);
+export function QuillEditor( {value, maxHeight, marginBottom, setFunction}: QuillEditorProps ) {
+    const [editorHtml, setEditorHtml] = useState<string>(value);
     function changeHandel(html: any) {
         setEditorHtml(html);
-        setValueFunc(editorHtml);
+        setFunction(editorHtml);
     }
 
     useEffect(() => {
@@ -61,10 +63,17 @@ export function QuillEditor( {value, setValueFunc}: QuillEditorProps ) {
     }, [value]);
 
     useEffect(() => {
-        setValueFunc(editorHtml);
+        setFunction(editorHtml);
     }, [editorHtml]);
 
     return (
-        <ReactQuill theme="snow" value={editorHtml} onChange={changeHandel} modules={modules} formats={formats} style={{height: '500px', marginBottom: '50px'}}/>
+        <ReactQuill 
+            theme="snow" 
+            value={editorHtml} 
+            onChange={changeHandel} 
+            modules={modules} 
+            formats={formats} 
+            style={{height: `${maxHeight | 500}px`, marginBottom: `${marginBottom | 50}px`}}
+        />
     )
 }
