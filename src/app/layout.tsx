@@ -18,26 +18,25 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
         const fetch = async () => {
             const accessToken = await getAccessToken();
             if (accessToken) {
+                // AccessToken 입력
                 setAccessToken(accessToken);
+
+                // 회원정보 입력
+                setUserInfo({
+                    user_id: 'asdf1234',
+                    name: '김테스트',
+                    age: 30
+                });
+        
+                // 회원 프로필 입력
+                setUserProfile({
+                    tel: '010-0000-0000',
+                    email: 'asdf@naver.com',
+                    push_receive_yn: 'Y'
+                });
             }
             setLoading(false);
         }
-
-
-        // // 로그인이 되어있다고 가정하기
-        // setAccessToken(new Date().getTime().toString());
-
-        // setUserInfo({
-        //     user_id: 'asdf1234',
-        //     name: '김테스트',
-        //     age: 30
-        // });
-
-        // setUserProfile({
-        //     tel: '010-0000-0000',
-        //     email: 'asdf@naver.com',
-        //     push_receive_yn: 'Y'
-        // });
 
         fetch();
     }, []);
