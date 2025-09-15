@@ -4,6 +4,16 @@ export type AccessDataType = {
     accessTokenRefresh: Function;
 }
 
+// AccessToken Decode Type
+export type accessTokenDecodeType = {
+    type: string;
+    user_id: string;
+    auth_name: string;
+    now: string;
+    iat: number;
+    exp: number;
+}
+
 // 회원정보
 export type UserInfoType = {
     user_id: string;

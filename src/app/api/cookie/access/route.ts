@@ -1,9 +1,10 @@
 'use server';
+import { accessTokenDecodeType } from "@/types/user";
 import { cookies } from "next/headers";
-import * as jwt from 'jsonwebtoken';
 import axios from "axios";
 import https from 'https';
 import dayjs from 'dayjs';
+import * as jwt from 'jsonwebtoken';
 
 const headers = {
     'Content-Type': 'application/json'
@@ -13,22 +14,13 @@ const httpsAgent = new https.Agent({
     rejectUnauthorized: false,
 })
 
-type accessTokenType = {
-    type: string;
-    user_id: string;
-    auth_name: string;
-    now: string;
-    iat: number;
-    exp: number;
-}
-
 /**
  * AccessToken 얻기
  * 
  * @param request 
  * @returns 
  */
-export async function GET(request: Request) {
+export async function GET(request: Request): Promise<Response> {
     const refreshCutTime: number = 60; // 설정된 시간보다 accessToken의 만료시간이 적은경우, Refresh (단위: 초)
     const url = new URL(request.url);
     const option = url.searchParams.get('option') || '';
@@ -38,7 +30,7 @@ export async function GET(request: Request) {
     // AcecssToken이 존재하는 경우
     if (accessToken) {
         if (option) {
-            const decode = jwt.verify(accessToken.value, process.env.NEXT_PUBLIC_JWT_CODE as string) as accessTokenType;
+            const decode = jwt.verify(accessToken.value, process.env.NEXT_PUBLIC_JWT_CODE as string) as accessTokenDecodeType;
             const now = Math.round(new Date().getTime() / 1000);
             if (decode.exp - now > refreshCutTime) {
                 return new Response(JSON.stringify({ success: true, data: decode }), {headers});
@@ -99,7 +91,7 @@ export async function GET(request: Request) {
  * @param request 
  * @returns 
  */
-export async function POST(request: Request) {
+export async function POST(request: Request): Promise<Response> {
     const { setTime, data } = await request.json();
 
     try {

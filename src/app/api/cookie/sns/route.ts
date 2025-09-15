@@ -24,7 +24,7 @@ export async function GET() {
 }
 
 // 소셜 로그인정보 쿠키 삭제
-export async function DELETE() {
+export async function DELETE(): Promise<Response> {
     try {
         const cookieStore = await cookies();
 

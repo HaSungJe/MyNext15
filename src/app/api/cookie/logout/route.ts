@@ -6,7 +6,7 @@ const headers = {
 }
 
 // 로그아웃 생성
-export async function POST(request: Request) {
+export async function POST(request: Request): Promise<Response> {
     try {
         const cookieStroe = await cookies();
         cookieStroe.delete('accessToken');

@@ -6,7 +6,7 @@ const headers = {
 }
 
 // refreshToken 얻기
-export async function GET() {
+export async function GET(): Promise<Response> {
     const cookieStore = await cookies();
     const data = cookieStore.get('refreshToken');
 
@@ -18,7 +18,7 @@ export async function GET() {
 }
 
 // refreshToken 생성
-export async function POST(request: Request) {
+export async function POST(request: Request): Promise<Response> {
     const cookieStore = await cookies();
     const { data } = await request.json();
 
