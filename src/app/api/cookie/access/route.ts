@@ -1,5 +1,4 @@
 'use server';
-export const dynamic = "force-dynamic";
 import { cookies } from "next/headers";
 import * as jwt from 'jsonwebtoken';
 import axios from "axios";
@@ -40,7 +39,6 @@ export async function GET(request: Request) {
     if (accessToken) {
         if (option) {
             const decode = jwt.verify(accessToken.value, process.env.NEXT_PUBLIC_JWT_CODE as string) as accessTokenType;
-
             const now = Math.round(new Date().getTime() / 1000);
             if (decode.exp - now > refreshCutTime) {
                 return new Response(JSON.stringify({ success: true, data: decode }), {headers});

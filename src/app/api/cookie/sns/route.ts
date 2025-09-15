@@ -1,5 +1,4 @@
 'use server';
-export const dynamic = "force-dynamic";
 import { cookies } from "next/headers";
 import * as jwt from 'jsonwebtoken';
 

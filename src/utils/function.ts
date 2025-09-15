@@ -24,7 +24,7 @@ export function selectboxAllCheck(event: React.ChangeEvent<HTMLInputElement>, at
 }
 
 // 입력칸 정보 변경
-export function changeFunction(event: any, func: Function) {
+export function changeFunction(event: any, func: Function): void {
     func(event.target.value);
 }
 

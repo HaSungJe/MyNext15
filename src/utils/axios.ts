@@ -1,18 +1,19 @@
 'use client';
+import { AccessDataType } from '@/types/user';
 import { getAccessToken } from './cookie';
 import axios from 'axios';
 
 /**
  * 엑셀 다운로드
  * 
+ * @param loginData
  * @param fileName 
  * @param url 
  * @param reload 
  */
-export async function axiosExcelDown(url: string, fileName: string, headers: Record<string, any> = {}) {
+export async function axiosExcelDown(loginData: AccessDataType, url: string, fileName: string, headers: Record<string, any> = {}) {
     try {
-        const accessToken = await getAccessToken();
-        const response = await axios.get(url, {responseType: 'blob', headers: {...headers,Authorization: `Bearer ${accessToken}`}});
+        const response = await axios.get(url, {responseType: 'blob', headers: {...headers,Authorization: `Bearer ${loginData?.accessToken}`}});
         const downloadUrl = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = downloadUrl;
@@ -21,27 +22,40 @@ export async function axiosExcelDown(url: string, fileName: string, headers: Rec
         link.click();
         link.remove();
     } catch (error: any) {
-        console.log(error)
+        if (error?.response?.data?.statusCode === 401) {
+            if (headers['retry'] === undefined) {
+                headers['retry'] = '1';
+                loginData.accessTokenRefresh();
+                return await axiosExcelDown(loginData, url, fileName, headers);
+            } else {
+                throw error;
+            }
+        } else {
+            throw error;
+        }
     }
 }
 
 /**
  * Get
  * 
+ * @param loginData
  * @param url 
  * @param headers
  */
-export async function axiosGet(url: string, headers: Record<string, any> = {}) {
+export async function axiosGet(loginData: AccessDataType, url: string, headers: Record<string, any> = {}) {
     try {
-        const accessToken = await getAccessToken();
-        return await axios.get(url, {headers: {...headers, Authorization: `Bearer ${accessToken}`}});
+        return await axios.get(url, {headers: {...headers, Authorization: `Bearer ${loginData?.accessToken}`}});
     } catch (error: any) {
         if (error?.response?.data?.statusCode === 401) {
             if (headers['retry'] === undefined) {
                 headers['retry'] = '1';
-                return await axiosGet(url, headers);
+                if (loginData && loginData?.accessTokenRefresh) {
+                    loginData.accessTokenRefresh();
+                }
+                return await axiosGet(loginData, url, headers);
             } else {
-                throw error
+                throw error;
             }
         } else {
             throw error;
@@ -52,12 +66,13 @@ export async function axiosGet(url: string, headers: Record<string, any> = {}) {
 /**
  * Post 
  * 
+ * @param loginData
  * @param url 
  * @param body 
  * @param headers
  * @returns 
  */
-export async function axiosPost(url: string, body: any, headers: Record<string, any> = {}) {
+export async function axiosPost(loginData: AccessDataType, url: string, body: any, headers: Record<string, any> = {}) {
     try {
         const accessToken = await getAccessToken();
         return await axios.post(url, body, {headers: {...headers, Authorization: `Bearer ${accessToken}`,},});
@@ -65,7 +80,10 @@ export async function axiosPost(url: string, body: any, headers: Record<string, 
         if (error?.response?.data?.statusCode === 401) {
             if (headers['retry'] === undefined) {
                 headers['retry'] = '1';
-                return await axiosGet(url, headers);
+                if (loginData && loginData?.accessTokenRefresh) {
+                    loginData.accessTokenRefresh();
+                }
+                return await axiosPost(loginData, url, body, headers);
             } else {
                 throw error
             }
@@ -78,12 +96,13 @@ export async function axiosPost(url: string, body: any, headers: Record<string, 
 /**
  * Put
  * 
+ * @param loginData
  * @param url 
  * @param body 
  * @param headers
  * @returns 
  */
-export async function axiosPut(url: string, body: any, headers: Record<string, any> = {}) {
+export async function axiosPut(loginData: AccessDataType, url: string, body: any, headers: Record<string, any> = {}) {
     try {
         const accessToken = await getAccessToken();
         return await axios.put(url, body, {headers: {...headers, Authorization: `Bearer ${accessToken}`}});
@@ -91,7 +110,10 @@ export async function axiosPut(url: string, body: any, headers: Record<string, a
         if (error?.response?.data?.statusCode === 401) {
             if (headers['retry'] === undefined) {
                 headers['retry'] = '1';
-                return await axiosGet(url, headers);
+                if (loginData && loginData?.accessTokenRefresh) {
+                    loginData.accessTokenRefresh();
+                }
+                return await axiosPut(loginData, url, body, headers);
             } else {
                 throw error
             }
@@ -104,13 +126,14 @@ export async function axiosPut(url: string, body: any, headers: Record<string, a
 /**
  * Patch
  * 
+ * @param loginData
  * @param url 
  * @param body 
  * @param reload 
  * @param headers
  * @returns 
  */
-export async function axiosPatch(url: string, body: any, headers: Record<string, any> = {}) {
+export async function axiosPatch(loginData: AccessDataType, url: string, body: any, headers: Record<string, any> = {}) {
     try {
         const accessToken = await getAccessToken();
         return await axios.patch(url, body, {headers: {...headers, Authorization: `Bearer ${accessToken}`}});
@@ -118,7 +141,10 @@ export async function axiosPatch(url: string, body: any, headers: Record<string,
         if (error?.response?.data?.statusCode === 401) {
             if (headers['retry'] === undefined) {
                 headers['retry'] = '1';
-                return await axiosGet(url, headers);
+                if (loginData && loginData?.accessTokenRefresh) {
+                    loginData.accessTokenRefresh();
+                }
+                return await axiosPatch(loginData, url, body, headers);
             } else {
                 throw error
             }
@@ -131,11 +157,12 @@ export async function axiosPatch(url: string, body: any, headers: Record<string,
 /**
  * Delete
  * 
+ * @param loginData
  * @param url 
  * @param body 
  * @param headers
  */
-export async function axiosDelete(url: string, body: any, headers: Record<string, any> = {}) {
+export async function axiosDelete(loginData: AccessDataType, url: string, body: any, headers: Record<string, any> = {}) {
     try {
         const accessToken = await getAccessToken();
         if (body && body !== null) {
@@ -147,7 +174,10 @@ export async function axiosDelete(url: string, body: any, headers: Record<string
         if (error?.response?.data?.statusCode === 401) {
             if (headers['retry'] === undefined) {
                 headers['retry'] = '1';
-                return await axiosGet(url, headers);
+                if (loginData && loginData?.accessTokenRefresh) {
+                    loginData.accessTokenRefresh();
+                }
+                return await axiosDelete(loginData, url, body, headers);
             } else {
                 throw error
             }
