@@ -8,7 +8,7 @@ import { setAccessToken, setRefreshToken } from "@/utils/cookie";
 import { AccessDataType } from "@/types/user";
 import { LoginContext } from "../LayoutProvider";
 import axios from "axios";
-import Loading from "@/components/tLoading";
+import Loading from "@/components/Loading";
 
 export default function Page() {
     const router = useRouter();

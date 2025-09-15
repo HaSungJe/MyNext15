@@ -4,7 +4,7 @@ import { AccessDataType } from "@/types/user";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { LoginContext } from "../LayoutProvider";
-import Loading from "@/components/tLoading";
+import Loading from "@/components/Loading";
 
 export default function LoginAfterLayout({children}: {children: React.ReactNode}) {
     const router = useRouter();

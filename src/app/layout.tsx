@@ -4,7 +4,7 @@ import { UserInfoType, UserProfileType } from "@/types/user";
 import { getAccessToken } from "@/utils/cookie";
 import { useRouter } from "next/navigation";
 import LayoutProvider from "./LayoutProvider";
-import Loading from "@/components/tLoading";
+import Loading from "@/components/Loading";
 
 export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
     const router = useRouter();
