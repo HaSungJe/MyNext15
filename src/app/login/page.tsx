@@ -14,8 +14,8 @@ export default function Page() {
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(true);
     const loginData: AccessDataType = useContext(LoginContext);
-    const [loginId, setLoginId] = useState<string>('hdswsolite');
-    const [loginPw, setLoginPw] = useState<string>('hdswsolite1234!@');
+    const [loginId, setLoginId] = useState<string>('');
+    const [loginPw, setLoginPw] = useState<string>('');
 
     // 이미 로그인된 경우 대시보드로 이동
     useEffect(() => {
