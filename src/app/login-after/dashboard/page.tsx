@@ -1,9 +1,9 @@
 'use client';
 import { LoginContext, UserContext, UserProfileContext } from "@/app/LayoutProvider";
 import { AccessDataType, UserInfoType, UserProfileType } from "@/types/user";
-import { useContext } from "react";
+import { memo, useContext } from "react";
 
-export default function Home() {
+const Home: React.FC<null> = memo(() => {
     // 회원정보
     const loginData: AccessDataType = useContext(LoginContext);
     const userInfo: UserInfoType = useContext(UserContext);
@@ -29,4 +29,6 @@ export default function Home() {
             <button type="button" onClick={() => loginData?.accessTokenRefresh()}>Refresh</button>
         </div>
     );
-}
+});
+
+export default Home;

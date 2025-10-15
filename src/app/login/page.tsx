@@ -1,6 +1,6 @@
 'use client';
 import { changeFunction } from "@/utils/function";
-import { useContext, useEffect, useState } from "react";
+import { memo, useContext, useEffect, useState } from "react";
 import { LoginDTO } from "./dto";
 import { axiosErrorHandle, validateAction } from "@/utils/util";
 import { useRouter } from "next/navigation";
@@ -10,10 +10,10 @@ import { LoginContext } from "../LayoutProvider";
 import axios from "axios";
 import Loading from "@/components/Loading";
 
-export default function Page() {
+const Login: React.FC<null> = memo(() => {
     const router = useRouter();
-    const [loading, setLoading] = useState<boolean>(true);
     const loginData: AccessDataType = useContext(LoginContext);
+    const [loading, setLoading] = useState<boolean>(true);
     const [loginId, setLoginId] = useState<string>('');
     const [loginPw, setLoginPw] = useState<string>('');
 
@@ -24,9 +24,9 @@ export default function Page() {
         } else {
             setLoading(false);
         }
-    }, []);
+    }, [router, loginData]);
 
-    // 로그인
+   // 로그인
     async function login(): Promise<void> {
         const dto = new LoginDTO({login_id: loginId, login_pw: loginPw});
         const vCheck = await validateAction(dto);
@@ -77,4 +77,6 @@ export default function Page() {
             </>
         )
     }
-}
+})
+
+export default Login;
