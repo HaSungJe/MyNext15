@@ -19,7 +19,6 @@ const Login: React.FC<null> = memo(() => {
     const loginId: UseInputType = useInput('');
     const loginPw: UseInputType = useInput('');
 
-
     // 이미 로그인된 경우 대시보드로 이동
     useEffect(() => {
         if (loginData?.accessToken) {
@@ -31,7 +30,7 @@ const Login: React.FC<null> = memo(() => {
 
    // 로그인
     async function login(): Promise<void> {
-        const dto = new LoginDTO({login_id: loginId, login_pw: loginPw});
+        const dto = new LoginDTO({login_id: loginId.value, login_pw: loginPw.value});
         const vCheck = await validateAction(dto);
         if (vCheck) {
             try {

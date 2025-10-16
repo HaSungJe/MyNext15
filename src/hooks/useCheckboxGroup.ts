@@ -1,11 +1,11 @@
 'use client';
-import { useCallback, useEffect, useState } from "react";
+import { ChangeEvent, ChangeEventHandler, useCallback, useEffect, useState } from "react";
 
 export type UseCheckboxGroupType = {
     isAllSelected: boolean;
     selected: Array<string | number>;
-    toggle: Function;
-    toggleAll: Function;
+    toggle: ChangeEventHandler<HTMLInputElement>;
+    toggleAll: ChangeEventHandler<HTMLInputElement>;
 }
 
 // 체크박스 체크/체크해제
@@ -20,24 +20,27 @@ export default function useCheckboxGroup(list: Array<any>, key: string): UseChec
     }, [list]);
 
     // 선택/선택해제
-    const toggle = useCallback((id: string | number) => {
-        if (selected.includes(id)) {
+    const toggle = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+        console.log()
+        if (selected.includes(event.target.dataset.id)) {
             setIsAllSelected(false);
-            setSelected(selected.filter((e: string | number) => e !== id));
+            setSelected(selected.filter((e: string | number) => e !== event.target.dataset.id));
         } else {
             setIsAllSelected(list.length === selected.length ? true : false);
-            setSelected([...selected, id]);
+            setSelected([...selected, event.target.dataset.id]);
         }
-    }, []);
+    }, [selected]);
 
     // 전체 선택/선택해제
     const toggleAll = useCallback(() => {
         if (isAllSelected) {
+            setIsAllSelected(false);
             setSelected([]);
         } else {
+            setIsAllSelected(true);
             setSelected(list.map((e: any) => e[key]));
         }
-    }, []);
+    }, [isAllSelected]);
 
     return { isAllSelected, selected, toggle, toggleAll }
 }
