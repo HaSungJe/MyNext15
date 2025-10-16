@@ -1,5 +1,4 @@
 'use client';
-import { changeFunction } from "@/utils/function";
 import { memo, useContext, useEffect, useState } from "react";
 import { LoginDTO } from "./dto";
 import { axiosErrorHandle, validateAction } from "@/utils/util";
@@ -9,13 +8,17 @@ import { AccessDataType } from "@/types/user";
 import { LoginContext } from "../LayoutProvider";
 import axios from "axios";
 import Loading from "@/components/Loading";
+import useInput, { UseInputType } from "@/hooks/useInput";
 
 const Login: React.FC<null> = memo(() => {
     const router = useRouter();
     const loginData: AccessDataType = useContext(LoginContext);
     const [loading, setLoading] = useState<boolean>(true);
-    const [loginId, setLoginId] = useState<string>('');
-    const [loginPw, setLoginPw] = useState<string>('');
+
+    // 커스텀 훅 사용
+    const loginId: UseInputType = useInput('');
+    const loginPw: UseInputType = useInput('');
+
 
     // 이미 로그인된 경우 대시보드로 이동
     useEffect(() => {
@@ -59,14 +62,14 @@ const Login: React.FC<null> = memo(() => {
                         <tr>
                             <th>아이디</th>
                             <td>
-                                <input type="text" value={loginId} onChange={() => changeFunction(event, setLoginId)}/>
+                                <input type="text" value={loginId.value} onChange={loginId.onChange} />
                                 <span data-type="alert_span" data-id="login_id"></span>
                             </td>
                         </tr>
                         <tr>
                             <th>비밀번호</th>
                             <td>
-                                <input type="password" value={loginPw} onChange={() => changeFunction(event, setLoginPw)}/>
+                                <input type="password" value={loginPw.value} onChange={loginPw.onChange}/>
                                 <span data-type="alert_span" data-id="login_pw"></span>
                             </td>
                         </tr>
