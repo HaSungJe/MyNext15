@@ -21,7 +21,6 @@ export default function useCheckboxGroup(list: Array<any>, key: string): UseChec
 
     // 선택/선택해제
     const toggle = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-        console.log()
         if (selected.includes(event.target.dataset.id)) {
             setIsAllSelected(false);
             setSelected(selected.filter((e: string | number) => e !== event.target.dataset.id));
@@ -40,7 +39,7 @@ export default function useCheckboxGroup(list: Array<any>, key: string): UseChec
             setIsAllSelected(true);
             setSelected(list.map((e: any) => e[key]));
         }
-    }, [isAllSelected]);
+    }, [list, isAllSelected]);
 
     return { isAllSelected, selected, toggle, toggleAll }
 }
