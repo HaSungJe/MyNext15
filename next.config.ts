@@ -30,17 +30,16 @@ const nextConfig: NextConfig = {
         ],
     },
     basePath: process.env.NEXT_PUBLIC_LOCAL_SERVER_PREFIX,
-    async rewrites() {
-        // 로그인 전용 페이지들을 login-after로 묶고, URL에서 login-after 지움
-        const internalRewrite = [
-            {
-                source: '/:path*',
-                destination: '/login-after/:path*',
-            }
-        ];
+    // async rewrites() {
+    //     const internalRewrite = [
+    //         {
+    //             source: `/:path((?! tap|login|test ).*)`,
+    //             destination: '/login-after/:path*',
+    //         }
+    //     ];
 
-        return [...internalRewrite];
-    }
+    //     return [...internalRewrite];
+    // }
 };
 
 export default nextConfig;
