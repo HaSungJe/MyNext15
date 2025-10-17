@@ -1,5 +1,5 @@
 'use client';
-import React, { JSX, useState } from "react";
+import React, { JSX, useCallback, useState } from "react";
 import TapList from "./TapList";
 import TapProvider from "./Provider";
 
@@ -32,7 +32,7 @@ export default function TapPage() {
     }
 
     // 페이지 이동
-    function onMovePage(title: string, component: JSX.Element) {
+    const onMovePage = useCallback((title: string, component: JSX.Element) => {
         const newTaps = [...taps];
         newTaps[selectTap] = {
             id: new Date().getTime(),
@@ -40,8 +40,8 @@ export default function TapPage() {
             component: React.cloneElement(component, {key: Date.now()})
         }
         setTaps([...newTaps]);
-    }
-    
+    }, [selectTap, taps]);
+
     return (
         <>  
             {/* 탭 및 메뉴 목록 */}
