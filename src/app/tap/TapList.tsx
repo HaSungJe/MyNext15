@@ -1,9 +1,9 @@
 'use client';
 import useInput, { UseInputType } from "@/hooks/useInput";
 import { useContext } from "react";
-import { TapDataType } from "../layout";
-import { TapContext } from "../Provider";
-import TapView from "../view/page";
+import { TapContext } from "./Provider";
+import { TapDataType } from "./page";
+import TapView from "./TapView";
 
 type ParamsProps = {
     params: Record<string, string>;

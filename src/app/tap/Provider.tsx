@@ -1,6 +1,6 @@
 'use client';
 import { createContext } from "react";
-import { TapDataType } from "./layout";
+import { TapDataType } from "./page";
 
 // Props
 type TapProviderProps = {

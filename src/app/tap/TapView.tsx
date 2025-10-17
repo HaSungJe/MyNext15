@@ -1,9 +1,8 @@
 'use client';
-import { useRouter } from "next/navigation";
 import { useContext } from "react";
-import { TapDataType } from "../layout";
-import { TapContext } from "../Provider";
-import TapList from "../list/page";
+import { TapContext } from "./Provider";
+import { TapDataType } from "./page";
+import TapList from "./TapList";
 
 type ParamsProps = {
     params: Record<string, string>;
