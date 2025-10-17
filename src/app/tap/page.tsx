@@ -20,13 +20,13 @@ export default function TapPage() {
     const [taps, setTaps] = useState<Array<TapType>>([]);
 
     // 탭 추가
-    function onAddTap(title: string, component: JSX.Element) {
+    const onAddTap = (title: string, component: JSX.Element) => {
         setSelectTap(taps.length);
         setTaps([...taps, {id: new Date().getTime(), title, component: React.cloneElement(component, {key: Date.now()})}]);
     }
 
     // 탭 삭제
-    function onDeleteTap(index: number) {
+    const onDeleteTap = (index: number) => {
         setTaps(taps.filter((_, componentIndex: number) => index !== componentIndex));
         setSelectTap(prev => prev === index ? 0 : (prev > index ? prev - 1 : prev));
     }
