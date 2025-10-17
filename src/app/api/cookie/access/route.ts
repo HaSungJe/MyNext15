@@ -1,6 +1,6 @@
 'use server';
 import { accessTokenDecodeType } from "@/types/user";
-import { cookies } from "next/headers";
+import { cookies, headers as nextHeaders } from "next/headers";
 import axios from "axios";
 import https from 'https';
 import dayjs from 'dayjs';
@@ -21,6 +21,11 @@ const httpsAgent = new https.Agent({
  * @returns 
  */
 export async function GET(request: Request): Promise<Response> {
+    // http, https 구분
+    const headerList = await nextHeaders();
+    const proto = headerList.get('x-forwarded-proto') || 'http';
+    const isSecure = proto === 'https';
+
     const refreshCutTime: number = 60; // 설정된 시간보다 accessToken의 만료시간이 적은경우, Refresh (단위: 초)
     const url = new URL(request.url);
     const option = url.searchParams.get('option') || '';
@@ -56,7 +61,7 @@ export async function GET(request: Request): Promise<Response> {
                     path: "/",
                     httpOnly: true,
                     sameSite: "strict",
-                    secure: process.env.NODE_ENV === 'development' ? false : true, 
+                    secure: process.env.NODE_ENV === 'development' ? false : isSecure, 
                 });
             }
 
@@ -66,7 +71,7 @@ export async function GET(request: Request): Promise<Response> {
                 path: "/",
                 httpOnly: true,
                 sameSite: "strict",
-                secure: process.env.NODE_ENV === 'development' ? false : true,
+                secure: process.env.NODE_ENV === 'development' ? false : isSecure,
                 expires: setTime
             });
 
@@ -92,6 +97,11 @@ export async function GET(request: Request): Promise<Response> {
  * @returns 
  */
 export async function POST(request: Request): Promise<Response> {
+    // http, https 구분
+    const headerList = await nextHeaders();
+    const proto = headerList.get('x-forwarded-proto') || 'http';
+    const isSecure = proto === 'https';
+
     const { setTime, data } = await request.json();
 
     try {
@@ -102,7 +112,7 @@ export async function POST(request: Request): Promise<Response> {
             path: "/",
             httpOnly: true,
             sameSite: "strict",
-            secure: process.env.NODE_ENV === 'development' ? false : true, 
+            secure: process.env.NODE_ENV === 'development' ? false : isSecure, 
             expires: endTime
         });
     

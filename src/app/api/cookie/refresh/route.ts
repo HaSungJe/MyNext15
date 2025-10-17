@@ -1,12 +1,12 @@
 'use server';
-import { cookies } from "next/headers";
+import { cookies, headers as nextHeaders } from "next/headers";
 
 const headers = {
     'Content-Type': 'application/json'
 }
 
 // refreshToken 얻기
-export async function GET(): Promise<Response> {
+export async function GET(): Promise<Response> {    
     const cookieStore = await cookies();
     const data = cookieStore.get('refreshToken');
 
@@ -19,6 +19,11 @@ export async function GET(): Promise<Response> {
 
 // refreshToken 생성
 export async function POST(request: Request): Promise<Response> {
+    // http, https 구분
+    const headerList = await nextHeaders();
+    const proto = headerList.get('x-forwarded-proto') || 'http';
+    const isSecure = proto === 'https';
+
     const cookieStore = await cookies();
     const { data } = await request.json();
 
@@ -27,7 +32,7 @@ export async function POST(request: Request): Promise<Response> {
             path: "/",
             httpOnly: true,
             sameSite: "strict",
-            secure: process.env.NODE_ENV === 'development' ? false : true, 
+            secure: process.env.NODE_ENV === 'development' ? false : isSecure, 
         });
     
         return new Response(JSON.stringify({ success: true }), { headers });
